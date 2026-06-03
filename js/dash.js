@@ -7,11 +7,13 @@
   const GRID_H = S.SLOT_COUNT * SLOT_PX;
   let quoteIdx = null;
   let lastMinute = -1;
+  let lastQuoteSlot = -1;
   let scrolledOnce = false;
 
   function init() {
     S.ensureDay();
-    quoteIdx = dailyQuoteIndex();
+    quoteIdx = autoQuoteIndex();
+    lastQuoteSlot = quoteSlot();
     $('#quoteCard').onclick = () => {
       let n = Math.floor(Math.random() * S.QUOTES.length);
       if (n === quoteIdx) n = (n + 1) % S.QUOTES.length;
@@ -23,7 +25,11 @@
 
   function tick() {
     renderClock();
-    if (S.planDayKey() !== S.state.planDay) { S.ensureDay(); quoteIdx = dailyQuoteIndex(); renderAll(); return; }
+    if (S.planDayKey() !== S.state.planDay) {
+      S.ensureDay(); quoteIdx = autoQuoteIndex(); lastQuoteSlot = quoteSlot(); renderAll(); return;
+    }
+    const qs = quoteSlot();
+    if (qs !== lastQuoteSlot) { lastQuoteSlot = qs; quoteIdx = autoQuoteIndex(); renderQuote(); }
     const m = S.kstParts().minutes;
     if (m !== lastMinute) { lastMinute = m; renderTimebox(); renderNowline(); }
   }
@@ -42,12 +48,9 @@
       `<span>KST</span><span class="reset">resets in ${Math.floor(ms / 3600000)}h ${Math.floor((ms % 3600000) / 60000)}m</span>`;
   }
 
-  // ── Quote ──
-  function dailyQuoteIndex() {
-    let h = 0; const k = S.planDayKey();
-    for (let i = 0; i < k.length; i++) h = (h * 31 + k.charCodeAt(i)) >>> 0;
-    return h % S.QUOTES.length;
-  }
+  // ── Quote — rotates every 30 minutes ──
+  const quoteSlot = () => Math.floor(Date.now() / (30 * 60 * 1000));
+  const autoQuoteIndex = () => (Math.imul(quoteSlot(), 2654435761) >>> 0) % S.QUOTES.length;
   function renderQuote() {
     const [text, who] = S.QUOTES[quoteIdx];
     $('#quoteText').textContent = text;

@@ -12,8 +12,9 @@ state in `localStorage`.
 - **`plan.html` — Plan** — brain-dump → "Break into tasks" → **drag rows (≡) to rank**
   them (top = P1; the order *is* the priority) + set minutes → add fixed-time jobs.
 - **`index.html` — Today** — a single glanceable dashboard (built for iPad): live
-  **digital clock** (KST), a rotating **tech-entrepreneur quote**, the **time box**
-  calendar, and the combined **to-do list** with iOS check-off + progress bar.
+  **digital clock** (KST), a **quote** that rotates every 30 min (144 real quotes —
+  founders, leaders, scientists, athletes, incl. 30 Korean; tap to shuffle), the
+  **time box** calendar, and the combined **to-do list** with iOS check-off + progress bar.
 
 ## How the day is built
 
@@ -27,7 +28,7 @@ state in `localStorage`.
 ## Daily reset
 
 Everything clears automatically at **06:00 KST** (UTC+9, no DST). The header shows a
-live "resets in Xh Ym" countdown. A new quote is chosen each day.
+live "resets in Xh Ym" countdown. The quote rotates every 30 minutes.
 
 ## Style
 
