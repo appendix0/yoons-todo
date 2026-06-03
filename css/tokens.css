@@ -1,0 +1,83 @@
+/* Yoon's TO-DO — design tokens
+   Theme: custom "iOS Dark" (system aesthetic — SF Pro, grouped dark surfaces,
+   iOS system colours). Authored to honour Apple HIG dark mode; the pure-dark
+   surfaces are intentional (the system look IS the design). */
+
+:root {
+  /* ---- Surfaces (iOS dark, slightly blue-cool) ---- */
+  --color-bg:        oklch(16% 0.006 265);  /* app base   ~#1b1c1f  (not pure black: easier on the eyes) */
+  --color-surface:   oklch(22% 0.006 265);  /* card       ~#2a2b2e  secondarySystemBackground */
+  --color-surface-2: oklch(27% 0.007 265);  /* row hover  ~#37383b  tertiary */
+  --color-rule:      oklch(32% 0.006 265);  /* separator  ~#444548 */
+  --color-rule-2:    oklch(42% 0.006 265);  /* stronger border */
+
+  /* ---- Text (iOS label hierarchy) ---- */
+  --color-text:      oklch(98% 0.002 265);  /* label */
+  --color-text-2:    oklch(72% 0.006 265);  /* secondaryLabel */
+  --color-text-3:    oklch(56% 0.006 265);  /* tertiaryLabel */
+
+  /* ---- iOS system accents ---- */
+  --color-accent:     oklch(62% 0.19 255);  /* systemBlue  #0A84FF */
+  --color-accent-ink: oklch(99% 0.01 255);  /* text on blue */
+  --color-success:    oklch(78% 0.18 152);  /* systemGreen #30D158 */
+  --color-danger:     oklch(64% 0.21 25);   /* systemRed   #FF453A */
+  --color-amber:      oklch(84% 0.15 88);   /* systemYellow#FFD60A — the "Notes" accent */
+  --color-focus:      oklch(70% 0.17 255);
+
+  /* priority dots */
+  --color-p1: oklch(64% 0.21 25);   /* red */
+  --color-p2: oklch(76% 0.16 65);   /* orange */
+  --color-p3: oklch(62% 0.19 255);  /* blue */
+
+  /* ---- Type — native SF stack, no web fonts ---- */
+  --font-system: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+                 system-ui, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-mono:   ui-monospace, "SF Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+
+  /* ---- Type scale (iOS-ish; body = 17px, friendly) ---- */
+  --text-xs:   0.75rem;    /* 12 */
+  --text-sm:   0.8125rem;  /* 13 — grouped section headers */
+  --text-base: 1.0625rem;  /* 17 — iOS body */
+  --text-md:   1.25rem;    /* 20 */
+  --text-lg:   1.5rem;     /* 24 */
+  --text-xl:   2rem;       /* 32 */
+  --text-2xl:  2.75rem;    /* 44 */
+  --text-clock: clamp(3.25rem, 11vw, 5.75rem);
+
+  --w-regular: 400;
+  --w-medium:  500;
+  --w-semi:    600;
+  --w-bold:    700;
+
+  --lh-tight:   1.05;
+  --lh-snug:    1.2;
+  --lh-normal:  1.45;
+
+  /* ---- Spacing (4-pt) ---- */
+  --space-3xs: 0.125rem;
+  --space-2xs: 0.25rem;
+  --space-xs:  0.5rem;
+  --space-sm:  0.75rem;
+  --space-md:  1rem;
+  --space-lg:  1.25rem;
+  --space-xl:  1.75rem;
+  --space-2xl: 2.5rem;
+  --space-3xl: 4rem;
+
+  /* ---- Shape (iOS continuous-corner widgets) ---- */
+  --radius-card:  22px;
+  --radius-inner: 14px;
+  --radius-input: 12px;
+  --radius-pill:  999px;
+
+  --hairline: 1px;
+  --tap: 44px;            /* HIG minimum tap target */
+
+  --shadow-card: 0 1px 2px oklch(0% 0 0 / 0.4);
+
+  /* ---- Motion ---- */
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 120ms;
+  --dur-short: 220ms;
+}
