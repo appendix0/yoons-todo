@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Plan · Yoon's TO-DO</title>
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/app.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">Plan</div>
+      <a class="navlink navlink--primary" href="index.html">Today &#8594;</a>
+    </header>
+
+    <main class="planwrap">
+      <section class="card">
+        <div class="card__head">
+          <h2 class="card__title">Brain dump</h2>
+          <span class="card__hint">One job per line</span>
+        </div>
+        <p class="plan-intro">Get everything in your head onto the page. Don't sort yet — just dump.</p>
+        <textarea id="brainDump" placeholder="Reply to CO&#10;30 min run&#10;Draft weekly report&#10;Call home&#10;Grocery run"></textarea>
+        <div class="row-actions">
+          <button id="btnAddTasks" class="btn btn--primary">Break into tasks &darr;</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card__head">
+          <h2 class="card__title">Prioritize</h2>
+          <span class="card__hint">Drag &#8801; to rank &middot; top = P1</span>
+        </div>
+        <div id="prioList"></div>
+      </section>
+
+      <section class="card">
+        <div class="card__head">
+          <h2 class="card__title">Fixed schedule</h2>
+          <span class="card__hint">Jobs locked to a clock time</span>
+        </div>
+        <div id="schedList"></div>
+        <div class="row-actions"><button id="btnAddSched" class="btn">+ Add fixed job</button></div>
+      </section>
+
+      <a id="btnBuild" class="btn btn--primary btn--block btn--lg" href="index.html">See today &#8594;</a>
+    </main>
+  </div>
+
+  <script src="js/store.js"></script>
+  <script src="js/plan.js"></script>
+</body>
+</html>

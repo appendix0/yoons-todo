@@ -7,21 +7,22 @@ packs it all into a 15-minute **time box** you check off through the day.
 No build step, no server, no dependencies. One `index.html`, plain CSS + JS,
 state in `localStorage`.
 
-## The two screens
+## The two screens (separate pages)
 
-- **Plan** — brain-dump → break into tasks → set priority (P1·P2·P3) + minutes →
-  add fixed-time jobs. This is the input you give it.
-- **Today** — a single glanceable dashboard (built for iPad): live **digital clock**
-  (KST), a rotating **tech-entrepreneur quote**, the **time box**, and the combined
-  **to-do list** with iOS-style check-off and a progress bar.
+- **`plan.html` — Plan** — brain-dump → "Break into tasks" → **drag rows (≡) to rank**
+  them (top = P1; the order *is* the priority) + set minutes → add fixed-time jobs.
+- **`index.html` — Today** — a single glanceable dashboard (built for iPad): live
+  **digital clock** (KST), a rotating **tech-entrepreneur quote**, the **time box**
+  calendar, and the combined **to-do list** with iOS check-off + progress bar.
 
 ## How the day is built
 
 1. Fixed-schedule jobs are pinned to their exact clock blocks.
-2. Prioritized jobs are greedily packed into the free blocks, P1 first, each taking
-   its estimated minutes.
-3. The result is the time box: 06:30 → midnight, in 15-minute blocks. The current
-   block is highlighted **NOW** and auto-scrolled into view.
+2. Prioritized jobs are greedily packed into the free blocks, in your drag-ranked
+   order (P1 first), each taking its estimated minutes.
+3. The result is the **time box** calendar: 06:30 → midnight, 15-minute grid, hour
+   labels, a red **now** line. **Drag any block up/down to reschedule it** (snaps to
+   15 min); dragging a fixed job moves its time. The view centers on "now" at load.
 
 ## Daily reset
 
@@ -34,11 +35,13 @@ Custom **iOS Dark** theme: native SF system font, grouped dark widget cards, iOS
 system colours (blue accent, green checkmarks, red/orange priority dots), big tabular
 digital clock. Designed for iPad landscape; stacks to a scroll on portrait/phone.
 
-## Known first-shot limits
+## Known limits
 
-- Auto-packing is greedy and contiguous: if a prioritized job runs into a fixed block
-  before its full duration fits, it takes the free run it can and the next job starts
-  after the fixed block. Jobs that don't fit the day are tagged **No slot**.
+- Auto-packing is greedy and contiguous: a prioritized job that runs into a fixed
+  block takes the free run it can; the next job starts after. Jobs that don't fit the
+  day are tagged **No slot** (drag them onto the calendar to place them by hand).
+- A block dragged onto an occupied time is allowed to overlap — overlaps lay out
+  side-by-side like a calendar. No "un-pin" button yet (re-rank in Plan to reset).
 - State is per-browser (`localStorage`). No sync across devices yet.
 
 ## Config

@@ -14,50 +14,10 @@
   <div class="app">
     <header class="topbar">
       <div class="brand">Yoon's <span>TO&#8209;DO</span></div>
-      <nav class="seg" role="tablist" aria-label="Views">
-        <button data-view="today" role="tab" aria-selected="true">Today</button>
-        <button data-view="plan" role="tab" aria-selected="false">Plan</button>
-      </nav>
+      <a class="navlink" href="plan.html">Plan &#8594;</a>
     </header>
 
-    <!-- ─────────────── PLAN ─────────────── -->
-    <main id="view-plan" class="view" role="tabpanel" hidden>
-      <section class="card">
-        <div class="card__head">
-          <h2 class="card__title">Brain dump</h2>
-          <span class="card__hint">One job per line</span>
-        </div>
-        <p class="plan-intro">Get everything in your head onto the page. Don't sort yet — just dump.</p>
-        <textarea id="brainDump" placeholder="Reply to CO&#10;30 min run&#10;Draft weekly report&#10;Call home&#10;Grocery run"></textarea>
-        <div class="row-actions">
-          <button id="btnAddTasks" class="btn btn--primary">Break into tasks &darr;</button>
-        </div>
-      </section>
-
-      <section class="card">
-        <div class="card__head">
-          <h2 class="card__title">Prioritize</h2>
-          <span class="card__hint">Tap P to cycle 1&middot;2&middot;3 &middot; set minutes</span>
-        </div>
-        <div id="prioList"></div>
-      </section>
-
-      <section class="card">
-        <div class="card__head">
-          <h2 class="card__title">Fixed schedule</h2>
-          <span class="card__hint">Jobs locked to a clock time</span>
-        </div>
-        <div id="schedList"></div>
-        <div class="row-actions">
-          <button id="btnAddSched" class="btn">+ Add fixed job</button>
-        </div>
-      </section>
-
-      <button id="btnBuild" class="btn btn--primary btn--block btn--lg">Build today &rarr;</button>
-    </main>
-
-    <!-- ─────────────── TODAY (dashboard) ─────────────── -->
-    <main id="view-today" class="view" role="tabpanel" hidden>
+    <main class="dash">
       <section id="clockCard" class="card clockcard" hidden>
         <div id="clockDate" class="clock__date">&mdash;</div>
         <div id="clockTime" class="clock__time">00:00</div>
@@ -73,15 +33,13 @@
       <section id="timeboxCard" class="card timebox" hidden>
         <div class="card__head">
           <h2 class="card__title">Time box</h2>
-          <span class="card__hint">06:30&ndash;24:00 &middot; 15 min</span>
+          <span class="card__hint">06:30&ndash;24:00 &middot; drag to reschedule</span>
         </div>
-        <div class="scroll"><div id="timeboxList"></div></div>
+        <div class="scroll"><div id="cal" class="cal"></div></div>
       </section>
 
       <section id="todoCard" class="card todo" hidden>
-        <div class="card__head">
-          <h2 class="card__title">To&#8209;do</h2>
-        </div>
+        <div class="card__head"><h2 class="card__title">To&#8209;do</h2></div>
         <div class="progress">
           <div class="progress__bar"><div id="progressFill" class="progress__fill"></div></div>
           <span id="progressText" class="progress__text">0 / 0 done</span>
@@ -91,12 +49,13 @@
 
       <div id="dashEmpty" class="dash-empty">
         <h2>No plan yet</h2>
-        <p>Tap <b>Plan</b> to brain&#8209;dump today, set priorities, and add fixed&#8209;time jobs.</p>
-        <button class="btn btn--primary" onclick="document.querySelector('.seg button[data-view=plan]').click()">Start planning</button>
+        <p>Head to <b>Plan</b> to brain&#8209;dump today, rank it, and add fixed&#8209;time jobs.</p>
+        <a class="btn btn--primary" href="plan.html">Start planning &#8594;</a>
       </div>
     </main>
   </div>
 
-  <script src="js/app.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/dash.js"></script>
 </body>
 </html>
