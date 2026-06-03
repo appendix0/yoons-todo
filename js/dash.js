@@ -3,7 +3,7 @@
   'use strict';
   const $ = (s, r = document) => r.querySelector(s);
   const el = (t, c) => { const n = document.createElement(t); if (c) n.className = c; return n; };
-  const SLOT_PX = 20;                      // height of one 15-min block (keep in sync with .cal gridline px in app.css)
+  const SLOT_PX = 14;                      // height of one 15-min block (keep in sync with .cal gridline px in app.css)
   const GRID_H = S.SLOT_COUNT * SLOT_PX;
   let quoteIdx = null;
   let lastMinute = -1;
