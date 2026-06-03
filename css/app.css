@@ -164,7 +164,8 @@ input:focus-visible, textarea:focus-visible, select:focus-visible { border-color
 /* ── Calendar time box ── */
 .cal {
   position: relative; margin-left: 54px;
-  background-image: repeating-linear-gradient(to bottom, var(--color-rule) 0 1px, transparent 1px 26px);
+  /* gridline every 20px = one 15-min block — must match SLOT_PX in dash.js */
+  background-image: repeating-linear-gradient(to bottom, var(--color-rule) 0 1px, transparent 1px 20px);
 }
 .hourline { position: absolute; left: 0; right: 0; border-top: 1px solid var(--color-rule-2); pointer-events: none; }
 .hourlabel { position: absolute; left: -54px; width: 46px; text-align: right; transform: translateY(-0.6em);
