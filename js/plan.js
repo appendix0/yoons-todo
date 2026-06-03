@@ -81,17 +81,22 @@
     return row;
   }
 
-  // pointer-based reorder (works on iPad touch)
+  // pointer-based reorder (works on iPad touch).
+  // Listen on `document`, NOT the handle: re-parenting the dragged row mid-drag
+  // releases any pointer capture, so a captured-handle listener would freeze after
+  // the first move. touch-action:none on .drag keeps the page from scrolling.
   function enableReorder(container, onReorder) {
     container.querySelectorAll('.editrow').forEach((row) => {
       const handle = row.querySelector('.drag');
       if (!handle) return;
       handle.addEventListener('pointerdown', (e) => {
         e.preventDefault();
+        let moved = false;
         row.classList.add('dragging');
-        handle.setPointerCapture(e.pointerId);
 
         const move = (ev) => {
+          ev.preventDefault();
+          moved = true;
           const y = ev.clientY;
           const sibs = [...container.querySelectorAll('.editrow:not(.dragging)')];
           let after = null;
@@ -100,12 +105,14 @@
         };
         const up = () => {
           row.classList.remove('dragging');
-          handle.removeEventListener('pointermove', move);
-          handle.removeEventListener('pointerup', up);
-          onReorder([...container.querySelectorAll('.editrow')].map((r) => r.dataset.id));
+          document.removeEventListener('pointermove', move);
+          document.removeEventListener('pointerup', up);
+          document.removeEventListener('pointercancel', up);
+          if (moved) onReorder([...container.querySelectorAll('.editrow')].map((r) => r.dataset.id));
         };
-        handle.addEventListener('pointermove', move);
-        handle.addEventListener('pointerup', up);
+        document.addEventListener('pointermove', move, { passive: false });
+        document.addEventListener('pointerup', up);
+        document.addEventListener('pointercancel', up);
       });
     });
   }
