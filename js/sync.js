@@ -5,6 +5,7 @@
 (() => {
   'use strict';
   const CFG_KEY = 'yoons-todo:r2';
+  const SYNCED_KEY = 'yoons-todo:r2:synced'; // set after this device's first merge
   const OBJECT = 'state.json';
   const POLL_MS = 60000;
   const PUSH_DELAY_MS = 1500;
@@ -62,20 +63,50 @@
   const local = () => { try { return JSON.parse(localStorage.getItem(S.KEY)); } catch (_) { return null; } };
   const editing = () => /^(INPUT|TEXTAREA|SELECT)$/.test((document.activeElement || {}).tagName || '');
 
+  const hasItems = (st) => st && (st.prioritized.length || st.scheduled.length || (st.brainDump || '').trim());
+  function union(a, b) { const ids = new Set(a.map((j) => j.id)); return [...a, ...b.filter((j) => !ids.has(j.id))]; }
+  function setLocal(st) { localStorage.setItem(S.KEY, JSON.stringify(st)); }
+
   async function pull() {
     let res;
     try { res = await signed('GET'); } catch (e) { console.warn('sync pull', e); return; }
-    if (res.status === 404) { etag = null; if ((local() || {}).updatedAt) schedulePush(); return; }
+    const first = !localStorage.getItem(SYNCED_KEY);
+    const mine = local();
+    const today = S.planDayKey();
+    const mineToday = mine && mine.planDay === today ? mine : null;
+    if (res.status === 404) {
+      etag = null;
+      // First sync: upload a plan made before sync existed (it has no timestamp yet).
+      if (first && hasItems(mineToday) && !mineToday.updatedAt) { mineToday.updatedAt = Date.now(); setLocal(mineToday); }
+      localStorage.setItem(SYNCED_KEY, '1');
+      if ((local() || {}).updatedAt) schedulePush();
+      return;
+    }
     if (!res.ok) { console.warn('sync pull', res.status); return; }
     etag = res.headers.get('ETag');
     const remote = await res.json();
-    const mine = local();
-    const today = S.planDayKey();
-    if (remote.planDay === today && (!mine || mine.planDay !== today || (remote.updatedAt || 0) > (mine.updatedAt || 0))) {
+    if (first) {
+      // First sync on this device: merge instead of picking a winner, so nothing is lost.
+      localStorage.setItem(SYNCED_KEY, '1');
+      if (remote.planDay === today && hasItems(mineToday)) {
+        const merged = {
+          ...remote,
+          brainDump: [remote.brainDump, mineToday.brainDump].filter((x) => (x || '').trim()).join('\n'),
+          prioritized: union(remote.prioritized, mineToday.prioritized),
+          scheduled: union(remote.scheduled, mineToday.scheduled),
+          updatedAt: Date.now(),
+        };
+        setLocal(merged);
+        await push();
+        location.reload();
+        return;
+      }
+    }
+    if (remote.planDay === today && (!mineToday || (remote.updatedAt || 0) > (mineToday.updatedAt || 0))) {
       if (editing() || dirty) return; // never yank the page mid-edit; next poll retries
-      localStorage.setItem(S.KEY, JSON.stringify(remote));
+      setLocal(remote);
       location.reload();
-    } else if (mine && mine.planDay === today && (mine.updatedAt || 0) > (remote.updatedAt || 0)) {
+    } else if (mineToday && (mineToday.updatedAt || 0) > (remote.updatedAt || 0)) {
       schedulePush();
     }
   }
