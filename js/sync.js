@@ -25,7 +25,21 @@
 
   let cfg;
   try { cfg = JSON.parse(localStorage.getItem(CFG_KEY)); } catch (_) { cfg = null; }
-  if (!cfg) return;
+
+  // Small status label (bottom-left) so sync problems are visible without devtools.
+  const badge = document.createElement('div');
+  badge.style.cssText = 'position:fixed;left:8px;bottom:6px;font:11px -apple-system,system-ui,sans-serif;' +
+    'opacity:.55;z-index:9999;padding:2px 6px;border-radius:6px;background:rgba(127,127,127,.15);cursor:pointer';
+  const status = (t) => { badge.textContent = t; };
+  const mount = () => document.body && !badge.isConnected && document.body.appendChild(badge);
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount); else mount();
+  if (!cfg) {
+    status('sync: off on this device');
+    return;
+  }
+  status('sync…');
+  badge.onclick = () => { status('sync…'); pull(); };
+  const hhmm = () => new Date().toTimeString().slice(0, 5);
 
   const enc = new TextEncoder();
   const hex = (buf) => [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, '0')).join('');
@@ -69,7 +83,7 @@
 
   async function pull() {
     let res;
-    try { res = await signed('GET'); } catch (e) { console.warn('sync pull', e); return; }
+    try { res = await signed('GET'); } catch (e) { console.warn('sync pull', e); status(`sync error: network (${e.message || e})`); return; }
     const first = !localStorage.getItem(SYNCED_KEY);
     const mine = local();
     const today = S.planDayKey();
@@ -79,10 +93,12 @@
       // First sync: upload a plan made before sync existed (it has no timestamp yet).
       if (first && hasItems(mineToday) && !mineToday.updatedAt) { mineToday.updatedAt = Date.now(); setLocal(mineToday); }
       localStorage.setItem(SYNCED_KEY, '1');
+      status(`synced ${hhmm()} (empty)`);
       if ((local() || {}).updatedAt) schedulePush();
       return;
     }
-    if (!res.ok) { console.warn('sync pull', res.status); return; }
+    if (!res.ok) { console.warn('sync pull', res.status); status(`sync error ${res.status}${res.status === 403 ? ' (key or account wrong?)' : ''}`); return; }
+    status(`synced ${hhmm()}`);
     etag = res.headers.get('ETag');
     const remote = await res.json();
     if (first) {
@@ -118,10 +134,11 @@
     const cond = etag ? { 'If-Match': etag } : { 'If-None-Match': '*' };
     let res;
     try { res = await signed('PUT', JSON.stringify(mine), { 'content-type': 'application/json', ...cond }); }
-    catch (e) { console.warn('sync push', e); return; }
+    catch (e) { console.warn('sync push', e); status(`sync error: network (${e.message || e})`); return; }
     if (res.status === 412) { dirty = false; return pull(); } // changed elsewhere: newer copy wins
-    if (!res.ok) { console.warn('sync push', res.status); return; }
+    if (!res.ok) { console.warn('sync push', res.status); status(`sync error ${res.status} on save`); return; }
     dirty = false;
+    status(`saved ${hhmm()}`);
     etag = res.headers.get('ETag') || null;
     if (!etag) pull();
   }
