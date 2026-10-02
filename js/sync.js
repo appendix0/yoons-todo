@@ -10,16 +10,21 @@
   const POLL_MS = 60000;
   const PUSH_DELAY_MS = 1500;
 
-  if (new URLSearchParams(location.search).has('sync')) {
+  // Ask for the key. Works from ?sync, or by tapping the label when sync is off — the only
+  // way in a Home Screen app, which has its own storage and no address bar.
+  function askKey() {
     const v = prompt('R2 sync: ACCOUNT_ID BUCKET ACCESS_KEY_ID SECRET (blank = turn off)');
-    if (v !== null) {
-      const p = v.trim().split(/\s+/);
-      try {
-        if (p.length === 4) localStorage.setItem(CFG_KEY, JSON.stringify({ account: p[0], bucket: p[1], keyId: p[2], secret: p[3] }));
-        else if (!v.trim()) localStorage.removeItem(CFG_KEY);
-        else alert('Need 4 values separated by spaces.');
-      } catch (_) { /* storage blocked */ }
-    }
+    if (v === null) return false;
+    const p = v.trim().split(/\s+/);
+    try {
+      if (p.length === 4) localStorage.setItem(CFG_KEY, JSON.stringify({ account: p[0], bucket: p[1], keyId: p[2], secret: p[3] }));
+      else if (!v.trim()) localStorage.removeItem(CFG_KEY);
+      else { alert('Need 4 values separated by spaces.'); return false; }
+    } catch (_) { alert('This browser blocked storage.'); return false; }
+    return true;
+  }
+  if (new URLSearchParams(location.search).has('sync')) {
+    askKey();
     history.replaceState(null, '', location.pathname);
   }
 
@@ -28,13 +33,15 @@
 
   // Small status label (bottom-left) so sync problems are visible without devtools.
   const badge = document.createElement('div');
-  badge.style.cssText = 'position:fixed;left:8px;bottom:6px;font:11px -apple-system,system-ui,sans-serif;' +
-    'opacity:.55;z-index:9999;padding:2px 6px;border-radius:6px;background:rgba(127,127,127,.15);cursor:pointer';
+  badge.style.cssText = 'position:fixed;left:50%;transform:translateX(-50%);bottom:14px;' +
+    'font:13px -apple-system,system-ui,sans-serif;color:#aaa;opacity:.85;z-index:9999;' +
+    'padding:4px 10px;border-radius:10px;background:rgba(127,127,127,.18);cursor:pointer';
   const status = (t) => { badge.textContent = t; };
   const mount = () => document.body && !badge.isConnected && document.body.appendChild(badge);
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount); else mount();
   if (!cfg) {
-    status('sync: off on this device');
+    status('sync: off on this device — tap to set key');
+    badge.onclick = () => { if (askKey()) location.reload(); };
     return;
   }
   status('sync…');
