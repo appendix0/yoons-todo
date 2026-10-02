@@ -206,12 +206,15 @@ window.S = (() => {
   let state;
   const blank = (dayKey) => ({ planDay: dayKey, brainDump: '', scheduled: [], prioritized: [] });
   function loadRaw() { try { return JSON.parse(localStorage.getItem(KEY)); } catch (_) { return null; } }
-  function save() { localStorage.setItem(KEY, JSON.stringify(state)); }
+  // updatedAt (ms) lets sync.js pick the newer copy; a fresh day is 0 so a plan made
+  // elsewhere for the same day (e.g. by Eva) always wins over a blank reset.
+  function write() { localStorage.setItem(KEY, JSON.stringify(state)); }
+  function save() { state.updatedAt = Date.now(); write(); }
   function ensureDay() {
     const dk = planDayKey();
     const s = loadRaw();
     let reset = false;
-    if (!s || s.planDay !== dk) { state = blank(dk); save(); reset = true; }
+    if (!s || s.planDay !== dk) { state = blank(dk); state.updatedAt = 0; write(); reset = true; }
     else state = s;
     return reset;
   }
