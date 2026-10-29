@@ -49,6 +49,7 @@ button { cursor: pointer; }
   transition: filter var(--dur-micro) var(--ease-out);
 }
 .navlink:hover { filter: brightness(1.12); }
+.navs { display: flex; gap: var(--space-xs); }
 .navlink--primary { background: var(--color-accent); color: var(--color-accent-ink); }
 
 .dash, .planwrap { flex: 1 1 auto; min-height: 0; }

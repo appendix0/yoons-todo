@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Month · Yoon's TO-DO</title>
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/app.css" />
+  <link rel="stylesheet" href="css/month.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="monthnav">
+        <button id="prevMonth" class="iconbtn" type="button" aria-label="Previous month">&#8249;</button>
+        <div id="monthTitle" class="brand">&mdash;</div>
+        <button id="nextMonth" class="iconbtn" type="button" aria-label="Next month">&#8250;</button>
+      </div>
+      <div class="navs">
+        <a class="navlink" href="plan.html">Plan</a>
+        <a class="navlink navlink--primary" href="index.html">Today &#8594;</a>
+      </div>
+    </header>
+
+    <main class="planwrap monthwrap">
+      <section class="card">
+        <div class="card__head">
+          <h2 class="card__title">This month's important things</h2>
+          <span id="daysLeft" class="card__hint"></span>
+        </div>
+        <p class="plan-intro">At most three outcomes. Everything below should move one of them.</p>
+        <div id="goalList"></div>
+        <div id="alloc" class="alloc"></div>
+      </section>
+
+      <section class="card">
+        <div class="card__head">
+          <h2 class="card__title">Not this month</h2>
+          <span class="card__hint">Delete before you optimize</span>
+        </div>
+        <textarea id="notList" class="notlist" placeholder="Things you are deliberately saying no to, one per line"></textarea>
+      </section>
+
+      <section class="card">
+        <div class="card__head">
+          <h2 class="card__title">Days</h2>
+          <span class="card__hint">One focus a day &middot; tap the tag to link a goal</span>
+        </div>
+        <div id="dayList" class="daylist"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="js/store.js?v=4"></script>
+  <script src="js/month.js"></script>
+</body>
+</html>

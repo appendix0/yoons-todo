@@ -1,0 +1,70 @@
+/* Yoon's TO-DO — Month page (days-long planner). Uses tokens.css + app.css. */
+
+.monthnav { display: flex; align-items: center; gap: var(--space-xs); }
+.iconbtn {
+  width: 38px; height: 38px; border: 0; border-radius: var(--radius-pill);
+  background: var(--color-surface); color: var(--color-text-2);
+  font-size: var(--text-md); line-height: 1; display: grid; place-items: center;
+}
+.iconbtn:hover { filter: brightness(1.12); }
+
+/* goal tags: A/B/C reuse the priority colours */
+.gtag {
+  flex: 0 0 auto; width: 28px; height: 28px; border-radius: var(--radius-pill); border: 0;
+  display: grid; place-items: center; font-size: var(--text-sm); font-weight: var(--w-bold);
+  color: oklch(18% 0.02 265); background: var(--color-surface-2);
+}
+.gtag--A { background: var(--color-p1); }
+.gtag--B { background: var(--color-p2); }
+.gtag--C { background: var(--color-p3); color: var(--color-accent-ink); }
+.gtag--none { color: var(--color-text-3); }
+.gtag--btn:disabled { opacity: 0.35; cursor: default; }
+
+.check {
+  flex: 0 0 auto; width: 30px; height: 30px; border-radius: var(--radius-pill);
+  border: 2px solid var(--color-rule-2); background: transparent;
+  color: oklch(18% 0.02 265); font-weight: var(--w-bold); display: grid; place-items: center;
+}
+.check--on { background: var(--color-success); border-color: var(--color-success); }
+
+.goalrow { grid-template-columns: auto 1fr auto auto; }
+
+/* allocation tally */
+.alloc { display: grid; gap: var(--space-sm); margin-top: var(--space-md); }
+.alloc:empty { display: none; }
+.alloc__row { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: var(--space-xs) var(--space-sm); }
+.alloc__name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--color-text-2); }
+.alloc__num { color: var(--color-text-3); font-size: var(--text-sm); font-variant-numeric: tabular-nums; }
+.alloc__bar { grid-column: 1 / -1; height: 6px; border-radius: var(--radius-pill); background: var(--color-surface-2); overflow: hidden; }
+/* light = days planned for the goal, solid = days done */
+.alloc__fill { --g: var(--color-p1); height: 100%; border-radius: var(--radius-pill); position: relative;
+  background: color-mix(in oklch, var(--g) 35%, transparent); }
+.alloc__fill--B { --g: var(--color-p2); }
+.alloc__fill--C { --g: var(--color-p3); }
+.alloc__done { position: absolute; inset: 0 auto 0 0; background: var(--g); border-radius: inherit; }
+.alloc__free { color: var(--color-text-3); font-size: var(--text-sm); }
+
+.notlist { min-height: 6rem; }
+
+/* the days list: one row per day, top to bottom */
+.daylist { display: flex; flex-direction: column; }
+.dayrow {
+  display: grid; grid-template-columns: 3.4rem auto 1fr auto; align-items: center;
+  gap: var(--space-sm); padding: var(--space-2xs) var(--space-xs);
+  border-radius: var(--radius-inner);
+}
+.dayrow__date { display: flex; align-items: baseline; gap: 0.35rem; font-variant-numeric: tabular-nums; }
+.dayrow__num { font-size: var(--text-md); font-weight: var(--w-semi); min-width: 1.6rem; text-align: right; }
+.dayrow__wd { font-size: var(--text-xs); color: var(--color-text-3); text-transform: uppercase; letter-spacing: 0.04em; }
+.dayrow__focus { min-height: 40px; padding: 0.45rem 0.7rem; background: transparent; }
+.dayrow__focus:hover, .dayrow__focus:focus-visible { background: var(--color-surface-2); }
+.dayrow--weekend .dayrow__wd { color: var(--color-p1); }
+.dayrow--past { opacity: 0.5; }
+.dayrow--today { background: color-mix(in oklch, var(--color-accent) 18%, transparent); opacity: 1; }
+.dayrow--today .dayrow__num { color: var(--color-accent); }
+.weekrule { height: var(--hairline); background: var(--color-rule); margin: var(--space-2xs) var(--space-xs); }
+
+@media (max-width: 480px) {
+  .dayrow { grid-template-columns: 2.9rem auto 1fr auto; gap: var(--space-xs); padding-inline: 0; }
+  .navs .navlink:not(.navlink--primary) { display: none; }
+}
