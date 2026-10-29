@@ -18,6 +18,7 @@
         <button id="prevMonth" class="iconbtn" type="button" aria-label="Previous month">&#8249;</button>
         <div id="monthTitle" class="brand">&mdash;</div>
         <button id="nextMonth" class="iconbtn" type="button" aria-label="Next month">&#8250;</button>
+        <span id="daysLeft" class="card__hint"></span>
       </div>
       <div class="navs">
         <a class="navlink" href="plan.html">Plan</a>
@@ -25,36 +26,49 @@
       </div>
     </header>
 
-    <main class="planwrap monthwrap">
-      <section class="card">
-        <div class="card__head">
-          <h2 class="card__title">This month's important things</h2>
-          <span id="daysLeft" class="card__hint"></span>
+    <main class="spread">
+      <section class="page card" id="pageLeft">
+        <div class="goals">
+          <div class="card__head">
+            <h2 class="card__title">This month's important things</h2>
+            <span class="card__hint">At most three</span>
+          </div>
+          <div id="goalList"></div>
+          <div id="alloc" class="alloc"></div>
         </div>
-        <p class="plan-intro">At most three outcomes. Everything below should move one of them.</p>
-        <div id="goalList"></div>
-        <div id="alloc" class="alloc"></div>
+        <div id="weeksLeft" class="weeks"></div>
       </section>
 
-      <section class="card">
-        <div class="card__head">
-          <h2 class="card__title">Not this month</h2>
-          <span class="card__hint">Delete before you optimize</span>
+      <section class="page card" id="pageRight">
+        <div id="weeksRight" class="weeks"></div>
+        <div class="notbox">
+          <div class="card__head">
+            <h2 class="card__title">Not this month</h2>
+            <span class="card__hint">Delete before you optimize</span>
+          </div>
+          <textarea id="notList" class="notlist" placeholder="Things you are deliberately saying no to, one per line"></textarea>
         </div>
-        <textarea id="notList" class="notlist" placeholder="Things you are deliberately saying no to, one per line"></textarea>
-      </section>
-
-      <section class="card">
-        <div class="card__head">
-          <h2 class="card__title">Days</h2>
-          <span class="card__hint">One focus a day &middot; tap the tag to link a goal</span>
-        </div>
-        <div id="dayList" class="daylist"></div>
       </section>
     </main>
   </div>
 
-  <script src="js/store.js?v=4"></script>
-  <script src="js/month.js"></script>
+  <div id="sheet" class="sheet" hidden>
+    <div class="sheet__panel card" role="dialog" aria-label="Plan">
+      <input id="pTitle" type="text" placeholder="Plan (e.g. CS285 HW2)" />
+      <div class="sheet__dates">
+        <label>From <input id="pStart" type="date" /></label>
+        <label>To <input id="pEnd" type="date" /></label>
+      </div>
+      <div id="pTags" class="sheet__tags"></div>
+      <div class="row-actions">
+        <button id="pDone" class="btn" type="button">Mark done</button>
+        <button id="pDelete" class="btn btn--danger" type="button">Delete</button>
+        <button id="pClose" class="btn btn--primary" type="button">Done editing</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/store.js?v=5"></script>
+  <script src="js/month.js?v=2"></script>
 </body>
 </html>

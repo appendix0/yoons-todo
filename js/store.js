@@ -210,11 +210,22 @@ window.S = (() => {
   // elsewhere for the same day (e.g. by Eva) always wins over a blank reset.
   function write() { localStorage.setItem(KEY, JSON.stringify(state)); }
   function save() { state.updatedAt = Date.now(); write(); }
+  // Archive: each day's plan is kept when the 06:00 reset clears it (archive.html shows them).
+  const ARCHIVE_KEY = 'yoons-todo:archive';
+  const hasItems = (st) => st && ((st.prioritized || []).length || (st.scheduled || []).length || (st.brainDump || '').trim());
+  function loadArchive() { try { return JSON.parse(localStorage.getItem(ARCHIVE_KEY)) || {}; } catch (_) { return {}; } }
+  function archiveDay(st) {
+    if (!hasItems(st) || !st.planDay) return;
+    const a = loadArchive();
+    if (a[st.planDay] && (a[st.planDay].updatedAt || 0) > (st.updatedAt || 0)) return;
+    a[st.planDay] = st;
+    try { localStorage.setItem(ARCHIVE_KEY, JSON.stringify(a)); } catch (_) { /* storage full or blocked */ }
+  }
   function ensureDay() {
     const dk = planDayKey();
     const s = loadRaw();
     let reset = false;
-    if (!s || s.planDay !== dk) { state = blank(dk); state.updatedAt = 0; write(); reset = true; }
+    if (!s || s.planDay !== dk) { archiveDay(s); state = blank(dk); state.updatedAt = 0; write(); reset = true; }
     else state = s;
     return reset;
   }
@@ -291,7 +302,7 @@ window.S = (() => {
     KEY, DAY_START_MIN, DAY_END_MIN, STEP_MIN, SLOT_COUNT, QUOTES,
     uid, pad, round15, snapToGrid, clamp,
     kstParts, planDayKey, msUntilReset, timeToMin, minToHHMM,
-    save, ensureDay, findJob, buildTimebox, layoutBlocks,
+    save, ensureDay, findJob, buildTimebox, layoutBlocks, loadArchive,
     get state() { return state; },
   };
 })();

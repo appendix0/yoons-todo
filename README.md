@@ -16,6 +16,14 @@ state in `localStorage`.
   founders, leaders, scientists, athletes, incl. 30 Korean; tap to shuffle), the
   **time box** calendar, and the combined **to-do list** with iOS check-off + progress bar.
 
+- **`month.html` — Month** — a two-page spread (iPad landscape; stacks when narrow): up to three
+  month goals (A/B/C) with a tally of days each gets, then the month **by week, and inside each week
+  by day**. Plans usually run 3–5 days, so a plan is a **bar across its days**: tap a day to start one
+  (3 days by default), drag its ends to stretch, drag the bar to move, tap to edit. Plus a
+  "Not this month" list. Method: Sam Altman's year/month/day lists ("allocate your year optimally,
+  not your day") and Musk's delete-before-you-optimize.
+- **`archive.html` — Archive** — every past day's plan, saved automatically at the 06:00 reset.
+
 ## How the day is built
 
 1. Fixed-schedule jobs are pinned to their exact clock blocks.

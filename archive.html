@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Archive · Yoon's TO-DO</title>
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/app.css" />
+  <link rel="stylesheet" href="css/archive.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">Archive</div>
+      <div class="navs">
+        <a class="navlink" href="month.html">Month</a>
+        <a class="navlink navlink--primary" href="plan.html">Plan &#8594;</a>
+      </div>
+    </header>
+    <main class="planwrap">
+      <p class="plan-intro">Every day's plan is kept here when the 06:00 reset clears it. Tap a day to open it.</p>
+      <div id="archive"></div>
+    </main>
+  </div>
+  <script src="js/store.js?v=5"></script>
+  <script src="js/archive.js"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+/* Yoon's TO-DO — Archive page. Uses tokens.css + app.css. */
+#archive { display: flex; flex-direction: column; gap: var(--space-sm); }
+.amonth { font-size: var(--text-md); font-weight: var(--w-bold); margin: var(--space-md) 0 0; }
+.aempty { color: var(--color-text-2); }
+.aday { padding: 0; }
+.aday__sum {
+  list-style: none; cursor: pointer; display: grid; grid-template-columns: 4rem 2.8rem 1fr;
+  align-items: center; gap: var(--space-2xs) var(--space-sm); padding: var(--space-md) var(--space-lg);
+}
+.aday__sum::-webkit-details-marker { display: none; }
+.aday__date { font-size: var(--text-md); font-weight: var(--w-semi); font-variant-numeric: tabular-nums; }
+.aday__wd { color: var(--color-text-3); font-size: var(--text-sm); text-transform: uppercase; }
+.aday__count { color: var(--color-text-2); font-size: var(--text-sm); font-variant-numeric: tabular-nums; text-align: right; }
+.aday__bar { grid-column: 1 / -1; height: 4px; border-radius: var(--radius-pill); background: var(--color-surface-2); overflow: hidden; }
+.aday__fill { display: block; height: 100%; background: var(--color-success); border-radius: inherit; }
+.aday__body { padding: 0 var(--space-lg) var(--space-md); }
+.aitem { display: grid; grid-template-columns: 1.4rem auto 1fr; gap: var(--space-sm); align-items: baseline;
+  padding: var(--space-2xs) 0; border-top: var(--hairline) solid var(--color-rule); }
+.aitem__mark { color: var(--color-success); font-weight: var(--w-bold); }
+.aitem__label { color: var(--color-text-3); font-size: var(--text-sm); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.aitem__title { min-width: 0; overflow-wrap: anywhere; }
+.aitem--done .aitem__title { color: var(--color-text-3); text-decoration: line-through; }
+.aday__dump { white-space: pre-wrap; font: inherit; color: var(--color-text-2); margin: 0; }
